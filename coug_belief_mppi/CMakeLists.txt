@@ -45,7 +45,10 @@ ament_auto_add_library(belief_state_monitor_component SHARED NO_TARGET_LINK_LIBR
 
 target_compile_features(belief_state_monitor_component PUBLIC cxx_std_17)
 
-target_link_libraries(belief_state_monitor_component belief_state_monitor_parameters)
+target_link_libraries(
+  belief_state_monitor_component
+  belief_state_monitor_parameters
+)
 
 rclcpp_components_register_nodes(belief_state_monitor_component
   "coug_belief_mppi::BeliefStateMonitorNode"
@@ -79,7 +82,11 @@ ament_auto_add_library(coug_belief_mppi_critics SHARED NO_TARGET_LINK_LIBRARIES
 
 target_compile_features(coug_belief_mppi_critics PUBLIC cxx_std_17)
 
-target_link_libraries(coug_belief_mppi_critics pluginlib::pluginlib OpenMP::OpenMP_CXX)
+target_link_libraries(
+  coug_belief_mppi_critics
+  pluginlib::pluginlib
+  OpenMP::OpenMP_CXX
+)
 
 pluginlib_export_plugin_description_file(nav2_mppi_controller critics.xml)
 
