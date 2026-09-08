@@ -72,10 +72,10 @@ To solve this continuous-time MDP in real-time, I plan to implement an open-loop
 
 To simplify the scope of the project, I will make use of the HoloOcean simulator and Nav2’s CPU-optimized “nav2_mppi_controller” class available in ROS 2. Specifically, I plan to:
 
-1) Integrate Nav2’s “nav2_mppi_controller” with the HoloOcean simulator
-2) Implement a new AUV dynamics plugin (based on a simplified Fossen model) to accurately model physical state propagation during rollouts
-3) Implement a new heuristic plugin to simulate uncertainty propagation and penalize trajectories based on the trace of the resulting covariance matrix, forcing the the controller to favor excitation-rich action sequences
-4) Benchmark the resulting algorithm’s uncertainty growth over a set waypoint sequence against a baseline MPPI controller
+1. Integrate Nav2’s “nav2_mppi_controller” with the HoloOcean simulator
+2. Implement a new AUV dynamics plugin (based on a simplified Fossen model) to accurately model physical state propagation during rollouts
+3. Implement a new heuristic plugin to simulate uncertainty propagation and penalize trajectories based on the trace of the resulting covariance matrix, forcing the the controller to favor excitation-rich action sequences
+4. Benchmark the resulting algorithm’s uncertainty growth over a set waypoint sequence against a baseline MPPI controller
 
 ## Contributing
 
@@ -84,6 +84,7 @@ We **strongly recommend** using the [`cougars-dev`](https://github.com/cougars-a
 ## Releasing
 
 This repository follows the **Semantic Versioning (SemVer 2.0.0)** standard:
+
 > Given a version number **`MAJOR.MINOR.PATCH`**, increment the:
 >
 > - **MAJOR** version when you make incompatible API changes
