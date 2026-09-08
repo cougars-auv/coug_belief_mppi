@@ -45,9 +45,7 @@ ament_auto_add_library(belief_state_monitor_component SHARED NO_TARGET_LINK_LIBR
 
 target_compile_features(belief_state_monitor_component PUBLIC cxx_std_17)
 
-target_link_libraries(belief_state_monitor_component
-  belief_state_monitor_parameters
-)
+target_link_libraries(belief_state_monitor_component belief_state_monitor_parameters)
 
 rclcpp_components_register_nodes(belief_state_monitor_component
   "coug_belief_mppi::BeliefStateMonitorNode"
@@ -59,9 +57,7 @@ ament_auto_add_library(waypoint_nav2_component SHARED NO_TARGET_LINK_LIBRARIES
 
 target_compile_features(waypoint_nav2_component PUBLIC cxx_std_17)
 
-target_link_libraries(waypoint_nav2_component
-  waypoint_nav2_parameters
-)
+target_link_libraries(waypoint_nav2_component waypoint_nav2_parameters)
 
 rclcpp_components_register_nodes(waypoint_nav2_component
   "coug_belief_mppi::WaypointNav2Node"
@@ -70,16 +66,12 @@ rclcpp_components_register_nodes(waypoint_nav2_component
 ament_auto_add_executable(belief_state_monitor NO_TARGET_LINK_LIBRARIES
   src/belief_state_monitor_node.cpp
 )
-target_link_libraries(belief_state_monitor
-  belief_state_monitor_component
-)
+target_link_libraries(belief_state_monitor belief_state_monitor_component)
 
 ament_auto_add_executable(waypoint_nav2 NO_TARGET_LINK_LIBRARIES
   src/waypoint_nav2_node.cpp
 )
-target_link_libraries(waypoint_nav2
-  waypoint_nav2_component
-)
+target_link_libraries(waypoint_nav2 waypoint_nav2_component)
 
 ament_auto_add_library(coug_belief_mppi_critics SHARED NO_TARGET_LINK_LIBRARIES
   src/belief_state_critic.cpp
@@ -87,10 +79,7 @@ ament_auto_add_library(coug_belief_mppi_critics SHARED NO_TARGET_LINK_LIBRARIES
 
 target_compile_features(coug_belief_mppi_critics PUBLIC cxx_std_17)
 
-target_link_libraries(coug_belief_mppi_critics
-  pluginlib::pluginlib
-  OpenMP::OpenMP_CXX
-)
+target_link_libraries(coug_belief_mppi_critics pluginlib::pluginlib OpenMP::OpenMP_CXX)
 
 pluginlib_export_plugin_description_file(nav2_mppi_controller critics.xml)
 

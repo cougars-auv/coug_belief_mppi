@@ -38,9 +38,7 @@ def create_rviz_config(agent_ns: str) -> str:
     with open(template_path) as template:
         content = template.read().replace("AGENT_NS", agent_ns)
 
-    with tempfile.NamedTemporaryFile(
-        mode="w", delete=False, suffix=".rviz"
-    ) as rendered_config:
+    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".rviz") as rendered_config:
         rendered_config.write(content)
         return rendered_config.name
 
@@ -118,8 +116,7 @@ def generate_launch_description() -> LaunchDescription:
                 "start_delay",
                 default_value="0.0",
                 description=(
-                    "Time in seconds to skip from the beginning of the bag file "
-                    "(start offset)"
+                    "Time in seconds to skip from the beginning of the bag file (start offset)"
                 ),
             ),
             DeclareLaunchArgument(
@@ -136,8 +133,7 @@ def generate_launch_description() -> LaunchDescription:
                 "playback_rate",
                 default_value="1.0",
                 description=(
-                    "Bag playback rate multiplier "
-                    "(e.g. 0.5 for half speed, 2.0 for double)"
+                    "Bag playback rate multiplier (e.g. 0.5 for half speed, 2.0 for double)"
                 ),
             ),
             OpaqueFunction(function=launch_setup),
