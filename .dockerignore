@@ -1,2 +1,7 @@
-.github/assets/
-demo/demo_bag
+**/assets/
+**/demo/
+
+**/.git/
+**/__pycache__/
+**/.mypy_cache/
+**/.ruff_cache/

@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM frostlab/cougars:runtime AS demo
+ARG VERSION=latest
+
+FROM frostlab/cougars:runtime-${VERSION} AS demo
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -25,7 +27,7 @@ COPY . ${OVERLAY_WS}/src/repo
 # Import packages and build the ROS workspace
 WORKDIR ${OVERLAY_WS}
 RUN source "/opt/ros/${ROS_DISTRO}/setup.bash" && \
-  vcs import src < src/repo/demo/demo.repos
+  vcs import src < src/repo/demo.repos
 
 RUN --mount=type=cache,target=${OVERLAY_WS}/build \
   --mount=type=cache,target=${OVERLAY_WS}/log \

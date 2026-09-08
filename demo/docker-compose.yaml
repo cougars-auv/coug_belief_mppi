@@ -18,6 +18,8 @@ services:
     build:
       context: ..
       dockerfile: demo/Dockerfile.demo
+      args:
+        - VERSION=${VERSION:-latest}
     container_name: cougars-belief-mppi-demo-ct
     environment:
       - DISPLAY=${DISPLAY}
