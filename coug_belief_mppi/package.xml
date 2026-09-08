@@ -36,8 +36,6 @@
   <exec_depend>nav2_planner</exec_depend>
   <exec_depend>nav2_waypoint_follower</exec_depend>
   <exec_depend>navigation2</exec_depend>
-  <exec_depend>plotjuggler</exec_depend>
-  <exec_depend>plotjuggler_ros</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>twist_mux</exec_depend>
 
