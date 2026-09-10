@@ -110,31 +110,22 @@ def generate_launch_description() -> LaunchDescription:
             DeclareLaunchArgument(
                 "use_sim_time",
                 default_value="true",
-                description="Use simulation/rosbag clock if true",
             ),
             DeclareLaunchArgument(
                 "start_delay",
                 default_value="0.0",
-                description=(
-                    "Time in seconds to skip from the beginning of the bag file (start offset)"
-                ),
             ),
             DeclareLaunchArgument(
                 "agent_ns",
                 default_value="auv0",
-                description="Namespace for the agent (e.g. auv0)",
             ),
             DeclareLaunchArgument(
                 "play_bag_path",
                 default_value="",
-                description="Path to play rosbag from",
             ),
             DeclareLaunchArgument(
                 "playback_rate",
                 default_value="1.0",
-                description=(
-                    "Bag playback rate multiplier (e.g. 0.5 for half speed, 2.0 for double)"
-                ),
             ),
             OpaqueFunction(function=launch_setup),
         ]
