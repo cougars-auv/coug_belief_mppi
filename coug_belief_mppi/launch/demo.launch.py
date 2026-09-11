@@ -53,7 +53,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     play_bag_path_str = play_bag_path.perform(context)
     agent_ns_str = agent_ns.perform(context)
 
-    actions = []
+    actions: list[Action] = []
 
     if play_bag_path_str:
         play_process = ExecuteProcess(
