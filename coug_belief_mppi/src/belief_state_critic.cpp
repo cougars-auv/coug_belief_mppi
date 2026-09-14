@@ -173,6 +173,18 @@ void BeliefStateCritic::score(CriticData& data) {
   const double dvl_period = 1.0 / dvl_update_rate_hz_;
   const double ahrs_period = 1.0 / ahrs_update_rate_hz_;
 
+  auto to_map_R_base = [](double yaw) {
+    const double cos_yaw = std::cos(yaw);
+    const double sin_yaw = std::sin(yaw);
+    Eigen::Matrix3d rotation;
+    rotation << cos_yaw, -sin_yaw, 0.0, sin_yaw, cos_yaw, 0.0, 0.0, 0.0, 1.0;
+    return rotation;
+  };
+
+  auto to_base_v = [](auto vx, auto vy) {
+    return Eigen::Vector3d(static_cast<double>(vx), static_cast<double>(vy), 0.0);
+  };
+
 // NOLINTNEXTLINE(openmp-use-default-none)
 #pragma omp parallel for schedule(static)
   // Iterate through each rollout in the batch
@@ -186,28 +198,22 @@ void BeliefStateCritic::score(CriticData& data) {
     Eigen::Vector3d map_a_base = Eigen::Vector3d::Zero();
 
     for (size_t step = 0; step < time_steps; ++step) {
-      const auto yaw = static_cast<double>(data.trajectories.yaws(batch_idx, step));
-      const double cos_yaw = std::cos(yaw);
-      const double sin_yaw = std::sin(yaw);
       curr_sim_time += dt;
 
       // --- PREDICTION STEP ---
-      Eigen::Matrix3d map_R_base;
-      map_R_base << cos_yaw, -sin_yaw, 0, sin_yaw, cos_yaw, 0, 0, 0, 1;
+      const Eigen::Matrix3d map_R_base =
+          to_map_R_base(static_cast<double>(data.trajectories.yaws(batch_idx, step)));
 
       // Estimate map-frame velocity and acceleration
-      const auto base_vx = static_cast<double>(data.state.vx(batch_idx, step));
-      const auto base_vy = static_cast<double>(data.state.vy(batch_idx, step));
-      const Eigen::Vector3d map_v_base(cos_yaw * base_vx - sin_yaw * base_vy,
-                                       sin_yaw * base_vx + cos_yaw * base_vy, 0.0);
+      const Eigen::Vector3d map_v_base =
+          map_R_base * to_base_v(data.state.vx(batch_idx, step), data.state.vy(batch_idx, step));
 
       if (step + 1 < time_steps) {
-        const auto next_yaw = static_cast<double>(data.trajectories.yaws(batch_idx, step + 1));
-        const auto next_base_vx = static_cast<double>(data.state.vx(batch_idx, step + 1));
-        const auto next_base_vy = static_cast<double>(data.state.vy(batch_idx, step + 1));
-        const Eigen::Vector3d next_map_v_base(
-            std::cos(next_yaw) * next_base_vx - std::sin(next_yaw) * next_base_vy,
-            std::sin(next_yaw) * next_base_vx + std::cos(next_yaw) * next_base_vy, 0.0);
+        const Eigen::Matrix3d next_map_R_base =
+            to_map_R_base(static_cast<double>(data.trajectories.yaws(batch_idx, step + 1)));
+        const Eigen::Vector3d next_map_v_base =
+            next_map_R_base *
+            to_base_v(data.state.vx(batch_idx, step + 1), data.state.vy(batch_idx, step + 1));
         map_a_base = (next_map_v_base - map_v_base) / dt;
       }
 
