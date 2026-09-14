@@ -4,7 +4,7 @@
   <name>coug_belief_mppi</name>
   <version>0.0.0</version>
   <description>Nav2 plugins for belief-space MPPI control.</description>
-  <maintainer email="snelsond@byu.edu">snelsondurrant</maintainer>
+  <maintainer email="snelsond@byu.edu">Nelson Durrant</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
