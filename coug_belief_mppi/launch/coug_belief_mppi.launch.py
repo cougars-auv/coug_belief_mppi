@@ -44,6 +44,7 @@ def generate_launch_description() -> LaunchDescription:
             [agent_ns, "_params.yaml"],
         ]
     )
+    scenario_param_file = LaunchConfiguration("scenario_param_file")
 
     odom_frame = agent_frame(agent_ns, "odom")
     base_link_frame = agent_frame(agent_ns, "base_link")
@@ -66,6 +67,10 @@ def generate_launch_description() -> LaunchDescription:
                 "agent_ns",
                 default_value="auv0",
             ),
+            DeclareLaunchArgument(
+                "scenario_param_file",
+                default_value=agent_param_file,
+            ),
             Node(
                 package="coug_belief_mppi",
                 executable="waypoint_nav2",
@@ -73,6 +78,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {"use_sim_time": use_sim_time},
                 ],
             ),
@@ -83,6 +89,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {"use_sim_time": use_sim_time},
                 ],
             ),
@@ -93,6 +100,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {"use_sim_time": use_sim_time},
                 ],
             ),
@@ -104,6 +112,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {"use_sim_time": use_sim_time},
                 ],
                 additional_env={"OMP_NUM_THREADS": "4"},
@@ -115,6 +124,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {"use_sim_time": use_sim_time},
                 ],
             ),
@@ -125,6 +135,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {
                         "use_sim_time": use_sim_time,
                         "global_frame": odom_frame,
@@ -139,6 +150,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {
                         "use_sim_time": use_sim_time,
                         "global_frame": "map",
@@ -153,6 +165,7 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     fleet_param_file,
                     agent_param_file,
+                    scenario_param_file,
                     {"use_sim_time": use_sim_time},
                 ],
             ),
