@@ -176,6 +176,9 @@ def generate_launch_description() -> LaunchDescription:
                 executable="lifecycle_manager",
                 name="lifecycle_manager_navigation",
                 parameters=[
+                    fleet_param_file,
+                    agent_param_file,
+                    scenario_param_file,
                     {
                         "use_sim_time": use_sim_time,
                         "autostart": True,
