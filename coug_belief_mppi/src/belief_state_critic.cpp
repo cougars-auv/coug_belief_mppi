@@ -61,15 +61,15 @@ void BeliefStateCritic::initialize() {
   gravity_ = Eigen::Vector3d::Map(gravity.data());
 
   std::vector<double> velocity_noise_sigmas;
-  double yaw_noise_sigma = 0.0;
+  double orientation_yaw_noise_sigma = 0.0;
 
   getParam(dvl_update_rate_hz_, "dvl_update_rate_hz", 10.0);
   getParam(ahrs_update_rate_hz_, "ahrs_update_rate_hz", 10.0);
   getParam(velocity_noise_sigmas, "velocity_noise_sigmas", std::vector<double>{0.02, 0.02, 0.02});
-  getParam(yaw_noise_sigma, "yaw_noise_sigma", 0.01745);
+  getParam(orientation_yaw_noise_sigma, "orientation_yaw_noise_sigma", 0.01745);
 
   dvl_noise_cov_ = to_diag_cov(velocity_noise_sigmas);
-  ahrs_noise_cov_ = Eigen::Matrix<double, 1, 1>::Constant(std::pow(yaw_noise_sigma, 2));
+  ahrs_noise_cov_ = Eigen::Matrix<double, 1, 1>::Constant(std::pow(orientation_yaw_noise_sigma, 2));
 
   getParam(fg_odom_topic_, "fg_odom_topic", std::string("odometry/global"));
   getParam(fg_vel_topic_, "fg_vel_topic", std::string("factor_graph_node/velocity"));
