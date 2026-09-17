@@ -1,7 +1,4 @@
-**/assets/
-**/demo/
+*
 
-**/.git/
-**/__pycache__/
-**/.mypy_cache/
-**/.ruff_cache/
+!coug_belief_mppi
+!demo.repos
