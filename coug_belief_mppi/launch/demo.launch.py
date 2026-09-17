@@ -36,7 +36,7 @@ def create_rviz_config(agent_ns: str) -> str:
         get_package_share_directory("coug_belief_mppi"), "config", "demo.rviz.template"
     )
     with open(template_path) as template:
-        content = template.read().replace("AGENT_NS", agent_ns)
+        content = template.read().replace("<agent_ns>", agent_ns)
 
     with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".rviz") as rendered_config:
         rendered_config.write(content)

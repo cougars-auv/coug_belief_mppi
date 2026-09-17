@@ -53,7 +53,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /AGENT_NS/robot_description
+        Value: /<agent_ns>/robot_description
       Enabled: true
       Links:
         All Links Enabled: true
@@ -65,7 +65,7 @@ Visualization Manager:
         Inertia: false
         Mass: false
       Name: RobotModel
-      TF Prefix: AGENT_NS
+      TF Prefix: <agent_ns>
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -118,7 +118,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /AGENT_NS/odometry/truth
+        Value: /<agent_ns>/odometry/truth
       Value: true
     - Angle Tolerance: 0.10000000149011612
       Class: rviz_default_plugins/Odometry
@@ -157,7 +157,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /AGENT_NS/odometry/global
+        Value: /<agent_ns>/odometry/global
       Value: true
     - Alpha: 1
       Buffer Length: 1
@@ -185,7 +185,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /AGENT_NS/smoothed_path
+        Value: /<agent_ns>/smoothed_path
       Value: true
     - Alpha: 1
       Arrow Length: 0.30000001192092896
@@ -206,7 +206,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /AGENT_NS/waypoints_nav2
+        Value: /<agent_ns>/waypoints_nav2
       Value: true
   Enabled: true
   Global Options:
@@ -270,7 +270,7 @@ Visualization Manager:
       Name: Current View
       Near Clip Distance: 0.009999999776482582
       Pitch: 0.7853981852531433
-      Target Frame: AGENT_NS/base_link
+      Target Frame: <agent_ns>/base_link
       Value: Orbit (rviz_default_plugins)
       Yaw: 0.7853981852531433
     Saved: ~
