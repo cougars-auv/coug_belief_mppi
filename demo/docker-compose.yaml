@@ -30,5 +30,5 @@ services:
       - ./demo_bag:/demo_bag:ro
     command: >
       ros2 launch coug_belief_mppi demo.launch.py
-      play_bag_path:=/demo_bag
       agent_ns:=blue1sim
+      play_bag_path:=/demo_bag

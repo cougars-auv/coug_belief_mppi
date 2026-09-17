@@ -24,7 +24,7 @@ SHELL [ "/bin/bash", "-c" ]
 
 COPY . ${OVERLAY_WS}/src/repo
 
-# Import packages and build the ROS workspace
+# Import packages and build the ROS 2 workspace
 WORKDIR ${OVERLAY_WS}
 RUN source "/opt/ros/${ROS_DISTRO}/setup.bash" && \
   vcs import src < src/repo/demo.repos
