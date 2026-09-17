@@ -45,13 +45,13 @@ def create_rviz_config(agent_ns: str) -> str:
 
 def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Action]:
     use_sim_time = LaunchConfiguration("use_sim_time")
-    start_delay = LaunchConfiguration("start_delay")
     agent_ns = LaunchConfiguration("agent_ns")
     play_bag_path = LaunchConfiguration("play_bag_path")
     playback_rate = LaunchConfiguration("playback_rate")
+    start_offset = LaunchConfiguration("start_offset")
 
-    play_bag_path_str = play_bag_path.perform(context)
     agent_ns_str = agent_ns.perform(context)
+    play_bag_path_str = play_bag_path.perform(context)
 
     actions: list[Action] = []
 
@@ -63,10 +63,10 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                 "play",
                 play_bag_path_str,
                 "--clock",
+                "--start-offset",
+                start_offset,
                 "--rate",
                 playback_rate,
-                "--start-offset",
-                start_delay,
                 "--topics",
                 "/tf",
                 "/tf_static",
@@ -112,16 +112,16 @@ def generate_launch_description() -> LaunchDescription:
                 default_value="true",
             ),
             DeclareLaunchArgument(
-                "start_delay",
-                default_value="0.0",
-            ),
-            DeclareLaunchArgument(
                 "agent_ns",
                 default_value="auv0",
             ),
             DeclareLaunchArgument(
                 "play_bag_path",
                 default_value="",
+            ),
+            DeclareLaunchArgument(
+                "start_offset",
+                default_value="0.0",
             ),
             DeclareLaunchArgument(
                 "playback_rate",
