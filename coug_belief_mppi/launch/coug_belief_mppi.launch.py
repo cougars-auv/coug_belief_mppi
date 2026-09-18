@@ -133,6 +133,7 @@ def generate_launch_description() -> LaunchDescription:
                     scenario_param_file,
                     {
                         "use_sim_time": use_sim_time,
+                        "local_frame": odom_frame,
                         "global_frame": odom_frame,
                         "robot_base_frame": base_link_frame,
                     },
