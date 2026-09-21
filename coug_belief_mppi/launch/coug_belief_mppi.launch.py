@@ -110,6 +110,7 @@ def generate_launch_description() -> LaunchDescription:
                     scenario_param_file,
                     {"use_sim_time": use_sim_time},
                 ],
+                remappings=[("/trajectories", "trajectories")],
                 additional_env={"OMP_NUM_THREADS": "4"},
             ),
             Node(
