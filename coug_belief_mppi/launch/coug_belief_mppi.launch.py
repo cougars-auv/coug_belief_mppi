@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from typing import Any
+
+from launch import LaunchContext, LaunchDescription
+from launch.action import Action
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitution import Substitution
 from launch.substitutions import (
     EnvironmentVariable,
@@ -28,7 +31,7 @@ def agent_frame(agent_ns: str | Substitution, frame: str) -> PythonExpression:
     return PythonExpression(["'", agent_ns, f"/{frame}' if '", agent_ns, f"' != '' else '{frame}'"])
 
 
-def generate_launch_description() -> LaunchDescription:
+def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Action]:
     use_sim_time = LaunchConfiguration("use_sim_time")
     agent_ns = LaunchConfiguration("agent_ns")
 
@@ -38,8 +41,8 @@ def generate_launch_description() -> LaunchDescription:
     agent_param_file = PathJoinSubstitution(
         [EnvironmentVariable("CONFIG_DIR"), [agent_ns, "_params.yaml"]]
     )
-    scenario_param_file = PythonExpression(
-        ["'", LaunchConfiguration("scenario_param_file"), "' or '", agent_param_file, "'"]
+    scenario_param_file = (
+        LaunchConfiguration("scenario_param_file").perform(context) or agent_param_file
     )
 
     odom_frame = agent_frame(agent_ns, "odom")
@@ -53,6 +56,126 @@ def generate_launch_description() -> LaunchDescription:
         "waypoint_follower",
     ]
 
+    return [
+        Node(
+            package="coug_belief_mppi",
+            executable="waypoint_nav2",
+            name="waypoint_nav2_node",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+        ),
+        Node(
+            package="coug_belief_mppi",
+            executable="belief_state_monitor",
+            name="belief_state_monitor_node",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+        ),
+        Node(
+            package="twist_mux",
+            executable="twist_mux",
+            name="twist_mux",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+        ),
+        # --- Navigation2 Pipeline ---
+        Node(
+            package="nav2_controller",
+            executable="controller_server",
+            name="controller_server",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+            remappings=[("/trajectories", "trajectories")],
+            additional_env={"OMP_NUM_THREADS": "4"},
+        ),
+        Node(
+            package="nav2_planner",
+            executable="planner_server",
+            name="planner_server",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+        ),
+        Node(
+            package="nav2_behaviors",
+            executable="behavior_server",
+            name="behavior_server",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {
+                    "use_sim_time": use_sim_time,
+                    "local_frame": odom_frame,
+                    "global_frame": odom_frame,
+                    "robot_base_frame": base_link_frame,
+                },
+            ],
+        ),
+        Node(
+            package="nav2_bt_navigator",
+            executable="bt_navigator",
+            name="bt_navigator",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {
+                    "use_sim_time": use_sim_time,
+                    "global_frame": "map",
+                    "robot_base_frame": base_link_frame,
+                },
+            ],
+        ),
+        Node(
+            package="nav2_waypoint_follower",
+            executable="waypoint_follower",
+            name="waypoint_follower",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+        ),
+        Node(
+            package="nav2_lifecycle_manager",
+            executable="lifecycle_manager",
+            name="lifecycle_manager_navigation",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {
+                    "use_sim_time": use_sim_time,
+                    "autostart": True,
+                    "node_names": lifecycle_nodes,
+                },
+            ],
+        ),
+    ]
+
+
+def generate_launch_description() -> LaunchDescription:
     return LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -67,120 +190,6 @@ def generate_launch_description() -> LaunchDescription:
                 "scenario_param_file",
                 default_value="",
             ),
-            Node(
-                package="coug_belief_mppi",
-                executable="waypoint_nav2",
-                name="waypoint_nav2_node",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {"use_sim_time": use_sim_time},
-                ],
-            ),
-            Node(
-                package="coug_belief_mppi",
-                executable="belief_state_monitor",
-                name="belief_state_monitor_node",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {"use_sim_time": use_sim_time},
-                ],
-            ),
-            Node(
-                package="twist_mux",
-                executable="twist_mux",
-                name="twist_mux",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {"use_sim_time": use_sim_time},
-                ],
-            ),
-            # --- Navigation2 Pipeline ---
-            Node(
-                package="nav2_controller",
-                executable="controller_server",
-                name="controller_server",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {"use_sim_time": use_sim_time},
-                ],
-                remappings=[("/trajectories", "trajectories")],
-                additional_env={"OMP_NUM_THREADS": "4"},
-            ),
-            Node(
-                package="nav2_planner",
-                executable="planner_server",
-                name="planner_server",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {"use_sim_time": use_sim_time},
-                ],
-            ),
-            Node(
-                package="nav2_behaviors",
-                executable="behavior_server",
-                name="behavior_server",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {
-                        "use_sim_time": use_sim_time,
-                        "local_frame": odom_frame,
-                        "global_frame": odom_frame,
-                        "robot_base_frame": base_link_frame,
-                    },
-                ],
-            ),
-            Node(
-                package="nav2_bt_navigator",
-                executable="bt_navigator",
-                name="bt_navigator",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {
-                        "use_sim_time": use_sim_time,
-                        "global_frame": "map",
-                        "robot_base_frame": base_link_frame,
-                    },
-                ],
-            ),
-            Node(
-                package="nav2_waypoint_follower",
-                executable="waypoint_follower",
-                name="waypoint_follower",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {"use_sim_time": use_sim_time},
-                ],
-            ),
-            Node(
-                package="nav2_lifecycle_manager",
-                executable="lifecycle_manager",
-                name="lifecycle_manager_navigation",
-                parameters=[
-                    fleet_param_file,
-                    agent_param_file,
-                    scenario_param_file,
-                    {
-                        "use_sim_time": use_sim_time,
-                        "autostart": True,
-                        "node_names": lifecycle_nodes,
-                    },
-                ],
-            ),
+            OpaqueFunction(function=launch_setup),
         ]
     )
