@@ -40,22 +40,24 @@ void BeliefStateCritic::initialize() {
     return Eigen::Vector3d::Map(sigmas.data()).cwiseAbs2().asDiagonal();
   };
 
-  std::vector<double> accel_noise_sigmas;
-  std::vector<double> gyro_noise_sigmas;
+  std::vector<double> accel_noise_density_sigmas;
+  std::vector<double> gyro_noise_density_sigmas;
   std::vector<double> accel_bias_rw_sigmas;
   std::vector<double> gyro_bias_rw_sigmas;
   std::vector<double> gravity;
 
-  getParam(accel_noise_sigmas, "accel_noise_sigmas", std::vector<double>{5.6e-4, 5.6e-4, 5.6e-4});
-  getParam(gyro_noise_sigmas, "gyro_noise_sigmas", std::vector<double>{5.24e-5, 5.24e-5, 5.24e-5});
+  getParam(accel_noise_density_sigmas, "accel_noise_density_sigmas",
+           std::vector<double>{5.6e-4, 5.6e-4, 5.6e-4});
+  getParam(gyro_noise_density_sigmas, "gyro_noise_density_sigmas",
+           std::vector<double>{5.24e-5, 5.24e-5, 5.24e-5});
   getParam(accel_bias_rw_sigmas, "accel_bias_rw_sigmas",
            std::vector<double>{1.4e-5, 1.4e-5, 1.4e-5});
   getParam(gyro_bias_rw_sigmas, "gyro_bias_rw_sigmas", std::vector<double>{3.5e-6, 3.5e-6, 3.5e-6});
   getParam(integration_covariance_, "integration_covariance", 1.0e-8);
   getParam(gravity, "gravity", std::vector<double>{0.0, 0.0, -9.8});
 
-  gyro_noise_cov_ = to_diag_cov(gyro_noise_sigmas);
-  accel_noise_cov_ = to_diag_cov(accel_noise_sigmas);
+  gyro_noise_cov_ = to_diag_cov(gyro_noise_density_sigmas);
+  accel_noise_cov_ = to_diag_cov(accel_noise_density_sigmas);
   accel_bias_rw_cov_ = to_diag_cov(accel_bias_rw_sigmas);
   gyro_bias_rw_cov_ = to_diag_cov(gyro_bias_rw_sigmas);
   gravity_ = Eigen::Vector3d::Map(gravity.data());
