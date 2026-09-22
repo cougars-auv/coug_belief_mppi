@@ -16,6 +16,7 @@ import os
 import tempfile
 from typing import Any
 
+import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchContext, LaunchDescription
 from launch.action import Action
@@ -31,15 +32,35 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
-def create_rviz_config(agent_ns: str) -> str:
+def create_rviz_config(agent_list: list[str]) -> str:
     template_path = os.path.join(
         get_package_share_directory("coug_belief_mppi"), "config", "demo.rviz.template"
     )
     with open(template_path) as template:
-        content = template.read().replace("<agent_ns>", agent_ns)
+        config = yaml.safe_load(template)
+
+    displays = config["Visualization Manager"]["Displays"]
+    templates = [yaml.safe_dump(display, sort_keys=False) for display in displays]
+    shared = [text for text in templates if "<agent_ns>" not in text]
+    per_agent = [text for text in templates if "<agent_ns>" in text]
+
+    displays[:] = [yaml.safe_load(text) for text in shared]
+    for agent_ns in agent_list:
+        group = [yaml.safe_load(text.replace("<agent_ns>", agent_ns)) for text in per_agent]
+        if len(agent_list) > 1:
+            group = [
+                {
+                    "Class": "rviz_common/Group",
+                    "Name": agent_ns,
+                    "Enabled": True,
+                    "Displays": group,
+                }
+            ]
+        displays.extend(group)
 
     with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".rviz") as rendered_config:
-        rendered_config.write(content)
+        content = yaml.safe_dump(config, sort_keys=False)
+        rendered_config.write(content.replace("<agent_ns>", agent_list[0]))
         return rendered_config.name
 
 
@@ -96,7 +117,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             package="rviz2",
             executable="rviz2",
             name="rviz2",
-            arguments=["-d", create_rviz_config(agent_ns_str)],
+            arguments=["-d", create_rviz_config([agent_ns_str])],
             parameters=[{"use_sim_time": use_sim_time}],
         )
     )
