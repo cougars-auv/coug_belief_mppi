@@ -53,21 +53,9 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         "planner_server",
         "behavior_server",
         "bt_navigator",
-        "waypoint_follower",
     ]
 
     return [
-        Node(
-            package="coug_belief_mppi",
-            executable="waypoint_nav2",
-            name="waypoint_nav2_node",
-            parameters=[
-                fleet_param_file,
-                agent_param_file,
-                scenario_param_file,
-                {"use_sim_time": use_sim_time},
-            ],
-        ),
         Node(
             package="coug_belief_mppi",
             executable="belief_state_monitor",
@@ -144,17 +132,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                     "global_frame": "map",
                     "robot_base_frame": base_link_frame,
                 },
-            ],
-        ),
-        Node(
-            package="nav2_waypoint_follower",
-            executable="waypoint_follower",
-            name="waypoint_follower",
-            parameters=[
-                fleet_param_file,
-                agent_param_file,
-                scenario_param_file,
-                {"use_sim_time": use_sim_time},
             ],
         ),
         Node(

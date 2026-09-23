@@ -16,11 +16,9 @@
 
   <depend>eigen</depend>
   <depend>geometry_msgs</depend>
-  <depend>nav2_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>pluginlib</depend>
   <depend>rclcpp</depend>
-  <depend>rclcpp_action</depend>
   <depend>rclcpp_components</depend>
   <depend>std_msgs</depend>
 
@@ -34,7 +32,6 @@
   <exec_depend>nav2_lifecycle_manager</exec_depend>
   <exec_depend>nav2_mppi_controller</exec_depend>
   <exec_depend>nav2_planner</exec_depend>
-  <exec_depend>nav2_waypoint_follower</exec_depend>
   <exec_depend>navigation2</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>twist_mux</exec_depend>

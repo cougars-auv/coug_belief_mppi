@@ -1,6 +1,0 @@
-waypoint_nav2_node:
-  waypoint_topic:
-    type: string
-    default_value: "waypoints_nav2"
-    validation:
-      not_empty<>: []

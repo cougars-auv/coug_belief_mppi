@@ -30,7 +30,7 @@ ament_auto_find_build_dependencies()
 
 find_package(OpenMP REQUIRED)
 
-set(COUG_BELIEF_MPPI_NODES belief_state_monitor waypoint_nav2)
+set(COUG_BELIEF_MPPI_NODES belief_state_monitor)
 
 set(COUG_BELIEF_MPPI_NODE_SOURCES "")
 set(COUG_BELIEF_MPPI_PARAM_LIBRARIES "")
@@ -56,7 +56,6 @@ target_link_libraries(
 
 rclcpp_components_register_nodes(coug_belief_mppi_component
   "coug_belief_mppi::BeliefStateMonitorNode"
-  "coug_belief_mppi::WaypointNav2Node"
 )
 
 foreach(node IN LISTS COUG_BELIEF_MPPI_NODES)
