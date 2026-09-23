@@ -47,14 +47,15 @@ WaypointNav2Node::WaypointNav2Node(const rclcpp::NodeOptions& options)
 
 void WaypointNav2Node::waypointCallback(const geometry_msgs::msg::PoseArray::ConstSharedPtr& msg) {
   if (msg->poses.empty()) {
-    RCLCPP_WARN(get_logger(), "Received empty waypoints. Canceling navigation.");
+    RCLCPP_WARN(get_logger(), "Received empty waypoint list; canceling navigation.");
     nav2_client_->async_cancel_all_goals();
     return;
   }
 
   static constexpr std::chrono::seconds kActionServerTimeout{5};
   if (!nav2_client_->wait_for_action_server(kActionServerTimeout)) {
-    RCLCPP_ERROR(get_logger(), "Nav2 FollowWaypoints action server not available.");
+    RCLCPP_ERROR(get_logger(), "Nav2 FollowWaypoints action server not available after %ld s.",
+                 static_cast<long>(kActionServerTimeout.count()));
     return;
   }
 
@@ -75,7 +76,8 @@ void WaypointNav2Node::waypointCallback(const geometry_msgs::msg::PoseArray::Con
 
   nav2_client_->async_send_goal(goal_msg, send_goal_options);
 
-  RCLCPP_INFO(get_logger(), "Sent goal with %zu waypoints to Nav2.", goal_msg.poses.size());
+  RCLCPP_INFO(get_logger(), "Sent %zu waypoint(s) to Nav2 in '%s'.", goal_msg.poses.size(),
+              msg->header.frame_id.c_str());
 }
 
 void WaypointNav2Node::resultCallback(const GoalHandleFollowWaypoints::WrappedResult& result) {
@@ -90,7 +92,8 @@ void WaypointNav2Node::resultCallback(const GoalHandleFollowWaypoints::WrappedRe
       RCLCPP_WARN(get_logger(), "Nav2 canceled the waypoint sequence.");
       break;
     default:
-      RCLCPP_ERROR(get_logger(), "Unknown result code from Nav2.");
+      RCLCPP_ERROR(get_logger(), "Nav2 returned unknown result code %d.",
+                   static_cast<int>(result.code));
       break;
   }
 }
