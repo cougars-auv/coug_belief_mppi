@@ -95,7 +95,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                 f"/{agent_ns_str}/odometry/truth",
                 f"/{agent_ns_str}/odometry/global",
                 f"/{agent_ns_str}/smoothed_path",
-                f"/{agent_ns_str}/waypoints_nav2",
+                f"/{agent_ns_str}/waypoints_viz",
                 f"/{agent_ns_str}/belief_state_monitor_node/norm_trace",
                 f"/{agent_ns_str}/factor_graph_node/velocity",
                 f"/{agent_ns_str}/factor_graph_node/imu/bias",

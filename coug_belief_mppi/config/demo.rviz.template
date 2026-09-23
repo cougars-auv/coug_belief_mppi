@@ -210,7 +210,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /<agent_ns>/waypoints_nav2
+        Value: /<agent_ns>/waypoints_viz
       Value: true
   Enabled: true
   Global Options:
