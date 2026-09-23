@@ -8,8 +8,8 @@ rosbag2_bagfile_information:
   message_count: 55862
   topics_with_message_count:
     - topic_metadata:
-        name: /blue1sim/belief_state_monitor_node/norm_trace
-        type: std_msgs/msg/Float64
+        name: /blue1holo/waypoints_nav2
+        type: geometry_msgs/msg/PoseArray
         serialization_format: cdr
         offered_qos_profiles:
           - history: keep_last
@@ -28,142 +28,9 @@ rosbag2_bagfile_information:
               nsec: 854775807
             avoid_ros_namespace_conventions: false
         type_description_hash: ""
-      message_count: 1919
+      message_count: 1
     - topic_metadata:
-        name: /blue1sim/smoothed_path
-        type: nav_msgs/msg/Path
-        serialization_format: cdr
-        offered_qos_profiles:
-          - history: keep_last
-            depth: 42
-            reliability: reliable
-            durability: volatile
-            deadline:
-              sec: 9223372036
-              nsec: 854775807
-            lifespan:
-              sec: 9223372036
-              nsec: 854775807
-            liveliness: automatic
-            liveliness_lease_duration:
-              sec: 9223372036
-              nsec: 854775807
-            avoid_ros_namespace_conventions: false
-        type_description_hash: ""
-      message_count: 1920
-    - topic_metadata:
-        name: /blue1sim/factor_graph_node/imu/bias
-        type: geometry_msgs/msg/TwistWithCovarianceStamped
-        serialization_format: cdr
-        offered_qos_profiles:
-          - history: keep_last
-            depth: 42
-            reliability: reliable
-            durability: volatile
-            deadline:
-              sec: 9223372036
-              nsec: 854775807
-            lifespan:
-              sec: 9223372036
-              nsec: 854775807
-            liveliness: automatic
-            liveliness_lease_duration:
-              sec: 9223372036
-              nsec: 854775807
-            avoid_ros_namespace_conventions: false
-        type_description_hash: ""
-      message_count: 1919
-    - topic_metadata:
-        name: /tf_static
-        type: tf2_msgs/msg/TFMessage
-        serialization_format: cdr
-        offered_qos_profiles:
-          - history: keep_last
-            depth: 1
-            reliability: reliable
-            durability: transient_local
-            deadline:
-              sec: 9223372036
-              nsec: 854775807
-            lifespan:
-              sec: 9223372036
-              nsec: 854775807
-            liveliness: automatic
-            liveliness_lease_duration:
-              sec: 9223372036
-              nsec: 854775807
-            avoid_ros_namespace_conventions: false
-          - history: keep_last
-            depth: 1
-            reliability: reliable
-            durability: transient_local
-            deadline:
-              sec: 9223372036
-              nsec: 854775807
-            lifespan:
-              sec: 9223372036
-              nsec: 854775807
-            liveliness: automatic
-            liveliness_lease_duration:
-              sec: 9223372036
-              nsec: 854775807
-            avoid_ros_namespace_conventions: false
-          - history: keep_last
-            depth: 1
-            reliability: reliable
-            durability: transient_local
-            deadline:
-              sec: 9223372036
-              nsec: 854775807
-            lifespan:
-              sec: 9223372036
-              nsec: 854775807
-            liveliness: automatic
-            liveliness_lease_duration:
-              sec: 9223372036
-              nsec: 854775807
-            avoid_ros_namespace_conventions: false
-          - history: keep_last
-            depth: 1
-            reliability: reliable
-            durability: transient_local
-            deadline:
-              sec: 9223372036
-              nsec: 854775807
-            lifespan:
-              sec: 9223372036
-              nsec: 854775807
-            liveliness: automatic
-            liveliness_lease_duration:
-              sec: 9223372036
-              nsec: 854775807
-            avoid_ros_namespace_conventions: false
-        type_description_hash: ""
-      message_count: 4
-    - topic_metadata:
-        name: /blue1sim/factor_graph_node/velocity
-        type: geometry_msgs/msg/TwistWithCovarianceStamped
-        serialization_format: cdr
-        offered_qos_profiles:
-          - history: keep_last
-            depth: 42
-            reliability: reliable
-            durability: volatile
-            deadline:
-              sec: 9223372036
-              nsec: 854775807
-            lifespan:
-              sec: 9223372036
-              nsec: 854775807
-            liveliness: automatic
-            liveliness_lease_duration:
-              sec: 9223372036
-              nsec: 854775807
-            avoid_ros_namespace_conventions: false
-        type_description_hash: ""
-      message_count: 1920
-    - topic_metadata:
-        name: /blue1sim/odometry/global
+        name: /blue1holo/odometry/truth
         type: nav_msgs/msg/Odometry
         serialization_format: cdr
         offered_qos_profiles:
@@ -183,7 +50,7 @@ rosbag2_bagfile_information:
               nsec: 854775807
             avoid_ros_namespace_conventions: false
         type_description_hash: ""
-      message_count: 1919
+      message_count: 38382
     - topic_metadata:
         name: /tf
         type: tf2_msgs/msg/TFMessage
@@ -252,7 +119,7 @@ rosbag2_bagfile_information:
         type_description_hash: ""
       message_count: 7877
     - topic_metadata:
-        name: /blue1sim/odometry/truth
+        name: /blue1holo/odometry/global
         type: nav_msgs/msg/Odometry
         serialization_format: cdr
         offered_qos_profiles:
@@ -272,10 +139,10 @@ rosbag2_bagfile_information:
               nsec: 854775807
             avoid_ros_namespace_conventions: false
         type_description_hash: ""
-      message_count: 38382
+      message_count: 1919
     - topic_metadata:
-        name: /blue1sim/waypoints_nav2
-        type: geometry_msgs/msg/PoseArray
+        name: /blue1holo/factor_graph_node/velocity
+        type: geometry_msgs/msg/TwistWithCovarianceStamped
         serialization_format: cdr
         offered_qos_profiles:
           - history: keep_last
@@ -294,9 +161,76 @@ rosbag2_bagfile_information:
               nsec: 854775807
             avoid_ros_namespace_conventions: false
         type_description_hash: ""
-      message_count: 1
+      message_count: 1920
     - topic_metadata:
-        name: /blue1sim/robot_description
+        name: /tf_static
+        type: tf2_msgs/msg/TFMessage
+        serialization_format: cdr
+        offered_qos_profiles:
+          - history: keep_last
+            depth: 1
+            reliability: reliable
+            durability: transient_local
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+          - history: keep_last
+            depth: 1
+            reliability: reliable
+            durability: transient_local
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+          - history: keep_last
+            depth: 1
+            reliability: reliable
+            durability: transient_local
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+          - history: keep_last
+            depth: 1
+            reliability: reliable
+            durability: transient_local
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+        type_description_hash: ""
+      message_count: 4
+    - topic_metadata:
+        name: /blue1holo/robot_description
         type: std_msgs/msg/String
         serialization_format: cdr
         offered_qos_profiles:
@@ -317,6 +251,72 @@ rosbag2_bagfile_information:
             avoid_ros_namespace_conventions: false
         type_description_hash: ""
       message_count: 1
+    - topic_metadata:
+        name: /blue1holo/factor_graph_node/imu/bias
+        type: geometry_msgs/msg/TwistWithCovarianceStamped
+        serialization_format: cdr
+        offered_qos_profiles:
+          - history: keep_last
+            depth: 42
+            reliability: reliable
+            durability: volatile
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+        type_description_hash: ""
+      message_count: 1919
+    - topic_metadata:
+        name: /blue1holo/smoothed_path
+        type: nav_msgs/msg/Path
+        serialization_format: cdr
+        offered_qos_profiles:
+          - history: keep_last
+            depth: 42
+            reliability: reliable
+            durability: volatile
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+        type_description_hash: ""
+      message_count: 1920
+    - topic_metadata:
+        name: /blue1holo/belief_state_monitor_node/norm_trace
+        type: std_msgs/msg/Float64
+        serialization_format: cdr
+        offered_qos_profiles:
+          - history: keep_last
+            depth: 42
+            reliability: reliable
+            durability: volatile
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+        type_description_hash: ""
+      message_count: 1919
   compression_format: ""
   compression_mode: ""
   relative_file_paths:

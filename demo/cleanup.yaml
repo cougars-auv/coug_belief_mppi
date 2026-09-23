@@ -4,11 +4,11 @@ output_bags:
     topics:
       - /tf
       - /tf_static
-      - /blue1sim/robot_description
-      - /blue1sim/odometry/truth
-      - /blue1sim/odometry/global
-      - /blue1sim/smoothed_path
-      - /blue1sim/waypoints_nav2
-      - /blue1sim/belief_state_monitor_node/norm_trace
-      - /blue1sim/factor_graph_node/velocity
-      - /blue1sim/factor_graph_node/imu/bias
+      - /blue1holo/robot_description
+      - /blue1holo/odometry/truth
+      - /blue1holo/odometry/global
+      - /blue1holo/smoothed_path
+      - /blue1holo/waypoints_nav2
+      - /blue1holo/belief_state_monitor_node/norm_trace
+      - /blue1holo/factor_graph_node/velocity
+      - /blue1holo/factor_graph_node/imu/bias
