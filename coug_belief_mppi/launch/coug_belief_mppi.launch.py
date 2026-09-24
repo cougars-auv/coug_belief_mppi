@@ -25,6 +25,7 @@ from launch.substitutions import (
     PythonExpression,
 )
 from launch_ros.actions import Node
+from nav2_common.launch import RewrittenYaml
 
 
 def agent_frame(agent_ns: str | Substitution, frame: str) -> PythonExpression:
@@ -35,8 +36,24 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     use_sim_time = LaunchConfiguration("use_sim_time")
     agent_ns = LaunchConfiguration("agent_ns")
 
-    fleet_param_file = PathJoinSubstitution(
-        [EnvironmentVariable("CONFIG_DIR"), "fleet", "coug_belief_mppi_params.yaml"]
+    odom_frame = agent_frame(agent_ns, "odom")
+    base_link_frame = agent_frame(agent_ns, "base_link")
+
+    fleet_param_file = RewrittenYaml(
+        source_file=PathJoinSubstitution(
+            [EnvironmentVariable("CONFIG_DIR"), "fleet", "coug_belief_mppi_params.yaml"]
+        ),
+        param_rewrites={
+            "/**.global_costmap.global_costmap.ros__parameters.global_frame": "map",
+            "/**.global_costmap.global_costmap.ros__parameters.robot_base_frame": base_link_frame,
+            "/**.local_costmap.local_costmap.ros__parameters.global_frame": odom_frame,
+            "/**.local_costmap.local_costmap.ros__parameters.robot_base_frame": base_link_frame,
+            "/**.behavior_server.ros__parameters.local_frame": odom_frame,
+            "/**.behavior_server.ros__parameters.global_frame": odom_frame,
+            "/**.behavior_server.ros__parameters.robot_base_frame": base_link_frame,
+            "/**.bt_navigator.ros__parameters.global_frame": "map",
+            "/**.bt_navigator.ros__parameters.robot_base_frame": base_link_frame,
+        },
     )
     agent_param_file = PathJoinSubstitution(
         [EnvironmentVariable("CONFIG_DIR"), [agent_ns, "_params.yaml"]]
@@ -44,9 +61,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     scenario_param_file = (
         LaunchConfiguration("scenario_param_file").perform(context) or agent_param_file
     )
-
-    odom_frame = agent_frame(agent_ns, "odom")
-    base_link_frame = agent_frame(agent_ns, "base_link")
 
     lifecycle_nodes = [
         "controller_server",
@@ -111,12 +125,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                 fleet_param_file,
                 agent_param_file,
                 scenario_param_file,
-                {
-                    "use_sim_time": use_sim_time,
-                    "local_frame": odom_frame,
-                    "global_frame": odom_frame,
-                    "robot_base_frame": base_link_frame,
-                },
+                {"use_sim_time": use_sim_time},
             ],
         ),
         Node(
@@ -127,11 +136,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                 fleet_param_file,
                 agent_param_file,
                 scenario_param_file,
-                {
-                    "use_sim_time": use_sim_time,
-                    "global_frame": "map",
-                    "robot_base_frame": base_link_frame,
-                },
+                {"use_sim_time": use_sim_time},
             ],
         ),
         Node(
