@@ -43,11 +43,11 @@ class BeliefStateCritic : public CriticFunction {
 
   // --- ROS Interfaces ---
   std::string fg_odom_topic_;
-  std::string fg_vel_topic_;
+  std::string fg_velocity_topic_;
   std::string fg_bias_topic_;
-  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr fg_odom_sub_;
-  rclcpp::Subscription<geometry_msgs::msg::TwistWithCovarianceStamped>::SharedPtr fg_vel_sub_;
-  rclcpp::Subscription<geometry_msgs::msg::TwistWithCovarianceStamped>::SharedPtr fg_bias_sub_;
+  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::TwistWithCovarianceStamped>::SharedPtr vel_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::TwistWithCovarianceStamped>::SharedPtr bias_sub_;
 
   // --- Parameters ---
   unsigned int power_{0};

@@ -39,7 +39,7 @@ BeliefStateMonitorNode::BeliefStateMonitorNode(const rclcpp::NodeOptions& option
       [this](const nav_msgs::msg::Odometry::ConstSharedPtr& msg) { odomCallback(msg); });
 
   vel_sub_ = create_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
-      params_.fg_vel_topic, rclcpp::SystemDefaultsQoS(),
+      params_.fg_velocity_topic, rclcpp::SystemDefaultsQoS(),
       [this](const geometry_msgs::msg::TwistWithCovarianceStamped::ConstSharedPtr& msg) {
         velCallback(msg);
       });

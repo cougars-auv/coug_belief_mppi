@@ -74,21 +74,21 @@ void BeliefStateCritic::initialize() {
   ahrs_noise_cov_ = Eigen::Matrix<double, 1, 1>::Constant(std::pow(orientation_yaw_noise_sigma, 2));
 
   getParam(fg_odom_topic_, "fg_odom_topic", std::string("odometry/global"));
-  getParam(fg_vel_topic_, "fg_vel_topic", std::string("factor_graph_node/velocity"));
+  getParam(fg_velocity_topic_, "fg_velocity_topic", std::string("factor_graph_node/velocity"));
   getParam(fg_bias_topic_, "fg_bias_topic", std::string("factor_graph_node/imu/bias"));
 
   auto node = parent_.lock();
-  fg_odom_sub_ = node->create_subscription<nav_msgs::msg::Odometry>(
+  odom_sub_ = node->create_subscription<nav_msgs::msg::Odometry>(
       fg_odom_topic_, rclcpp::SystemDefaultsQoS(),
       [this](const nav_msgs::msg::Odometry::ConstSharedPtr& msg) { fgOdomCallback(msg); });
 
-  fg_vel_sub_ = node->create_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
-      fg_vel_topic_, rclcpp::SystemDefaultsQoS(),
+  vel_sub_ = node->create_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
+      fg_velocity_topic_, rclcpp::SystemDefaultsQoS(),
       [this](const geometry_msgs::msg::TwistWithCovarianceStamped::ConstSharedPtr& msg) {
         fgVelCallback(msg);
       });
 
-  fg_bias_sub_ = node->create_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
+  bias_sub_ = node->create_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
       fg_bias_topic_, rclcpp::SystemDefaultsQoS(),
       [this](const geometry_msgs::msg::TwistWithCovarianceStamped::ConstSharedPtr& msg) {
         fgBiasCallback(msg);

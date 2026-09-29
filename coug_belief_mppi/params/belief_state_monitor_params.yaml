@@ -4,7 +4,7 @@ belief_state_monitor_node:
     default_value: "odometry/global"
     validation:
       not_empty<>: []
-  fg_vel_topic:
+  fg_velocity_topic:
     type: string
     default_value: "factor_graph_node/velocity"
     validation:
