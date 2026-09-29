@@ -82,42 +82,6 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             ],
         ),
         Node(
-            package="twist_mux",
-            executable="twist_mux",
-            name="twist_mux",
-            parameters=[
-                fleet_param_file,
-                agent_param_file,
-                scenario_param_file,
-                {"use_sim_time": use_sim_time},
-            ],
-        ),
-        # --- Navigation2 Pipeline ---
-        Node(
-            package="nav2_controller",
-            executable="controller_server",
-            name="controller_server",
-            parameters=[
-                fleet_param_file,
-                agent_param_file,
-                scenario_param_file,
-                {"use_sim_time": use_sim_time},
-            ],
-            remappings=[("/trajectories", "trajectories")],
-            additional_env={"OMP_NUM_THREADS": "4"},
-        ),
-        Node(
-            package="nav2_planner",
-            executable="planner_server",
-            name="planner_server",
-            parameters=[
-                fleet_param_file,
-                agent_param_file,
-                scenario_param_file,
-                {"use_sim_time": use_sim_time},
-            ],
-        ),
-        Node(
             package="nav2_behaviors",
             executable="behavior_server",
             name="behavior_server",
@@ -140,6 +104,19 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
             ],
         ),
         Node(
+            package="nav2_controller",
+            executable="controller_server",
+            name="controller_server",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+            remappings=[("/trajectories", "trajectories")],
+            additional_env={"OMP_NUM_THREADS": "4"},
+        ),
+        Node(
             package="nav2_lifecycle_manager",
             executable="lifecycle_manager",
             name="lifecycle_manager_navigation",
@@ -152,6 +129,28 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
                     "autostart": True,
                     "node_names": lifecycle_nodes,
                 },
+            ],
+        ),
+        Node(
+            package="nav2_planner",
+            executable="planner_server",
+            name="planner_server",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
+            ],
+        ),
+        Node(
+            package="twist_mux",
+            executable="twist_mux",
+            name="twist_mux",
+            parameters=[
+                fleet_param_file,
+                agent_param_file,
+                scenario_param_file,
+                {"use_sim_time": use_sim_time},
             ],
         ),
     ]
