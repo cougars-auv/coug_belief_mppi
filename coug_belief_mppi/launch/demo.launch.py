@@ -68,8 +68,8 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
     use_sim_time = LaunchConfiguration("use_sim_time")
     agent_ns = LaunchConfiguration("agent_ns")
     play_bag_path = LaunchConfiguration("play_bag_path")
-    playback_rate = LaunchConfiguration("playback_rate")
     start_offset = LaunchConfiguration("start_offset")
+    playback_rate = LaunchConfiguration("playback_rate")
 
     agent_ns_str = agent_ns.perform(context)
     play_bag_path_str = play_bag_path.perform(context)
