@@ -24,11 +24,21 @@ SHELL [ "/bin/bash", "-c" ]
 
 COPY . ${OVERLAY_WS}/src/repo
 
-# Import packages and build the ROS 2 workspace
 WORKDIR ${OVERLAY_WS}
+
+# Import demo packages
 RUN source "/opt/ros/${ROS_DISTRO}/setup.bash" && \
   vcs import src < src/repo/demo.repos
 
+# Install ROS 2 dependencies (rosdep)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  --mount=type=cache,target=/root/.ros/rosdep \
+  apt-get update \
+  && rosdep update \
+  && rosdep install --from-paths src --ignore-src -y
+
+# Build the ROS 2 workspace
 RUN --mount=type=cache,target=${OVERLAY_WS}/build \
   --mount=type=cache,target=${OVERLAY_WS}/log \
   source "/opt/ros/${ROS_DISTRO}/setup.bash" && \
