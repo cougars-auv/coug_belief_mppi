@@ -251,10 +251,11 @@ void BeliefStateCritic::fgOdomCallback(const nav_msgs::msg::Odometry::ConstShare
   pose_cov.bottomRightCorner<3, 3>() = cov_msg.topLeftCorner<3, 3>();
   pose_cov.topRightCorner<3, 3>() = cov_msg.bottomLeftCorner<3, 3>();
   pose_cov.bottomLeftCorner<3, 3>() = cov_msg.topRightCorner<3, 3>();
-  if (!pose_cov.allFinite() || (pose_cov.diagonal().array() <= 0.0).any()) {
+  if (!pose_cov.allFinite() || !pose_cov.isApprox(pose_cov.transpose()) ||
+      pose_cov.llt().info() != Eigen::Success) {
     RCLCPP_WARN_ONCE(logger_,
-                     "Odometry message covariance is unusable (non-finite or non-positive "
-                     "diagonal); keeping the last usable one.");
+                     "Odometry message covariance is unusable (non-finite or not positive-"
+                     "definite); keeping the last usable one.");
     return;
   }
   const std::lock_guard<std::mutex> lock(state_cov_mutex_);
@@ -269,10 +270,11 @@ void BeliefStateCritic::fgVelCallback(
   const Eigen::Map<const Eigen::Matrix<double, 6, 6, Eigen::RowMajor> > cov_msg(
       msg->twist.covariance.data());
   const Eigen::Matrix3d vel_cov = cov_msg.topLeftCorner<3, 3>();
-  if (!vel_cov.allFinite() || (vel_cov.diagonal().array() <= 0.0).any()) {
+  if (!vel_cov.allFinite() || !vel_cov.isApprox(vel_cov.transpose()) ||
+      vel_cov.llt().info() != Eigen::Success) {
     RCLCPP_WARN_ONCE(logger_,
-                     "Velocity message covariance is unusable (non-finite or non-positive "
-                     "diagonal); keeping the last usable one.");
+                     "Velocity message covariance is unusable (non-finite or not positive-"
+                     "definite); keeping the last usable one.");
     return;
   }
   const std::lock_guard<std::mutex> lock(state_cov_mutex_);
@@ -285,10 +287,11 @@ void BeliefStateCritic::fgBiasCallback(
   const Eigen::Map<const Eigen::Matrix<double, 6, 6, Eigen::RowMajor> > cov_msg(
       msg->twist.covariance.data());
   const Eigen::Matrix<double, 6, 6> bias_cov = cov_msg;
-  if (!bias_cov.allFinite() || (bias_cov.diagonal().array() <= 0.0).any()) {
+  if (!bias_cov.allFinite() || !bias_cov.isApprox(bias_cov.transpose()) ||
+      bias_cov.llt().info() != Eigen::Success) {
     RCLCPP_WARN_ONCE(logger_,
-                     "IMU bias message covariance is unusable (non-finite or non-positive "
-                     "diagonal); keeping the last usable one.");
+                     "IMU bias message covariance is unusable (non-finite or not positive-"
+                     "definite); keeping the last usable one.");
     return;
   }
   const std::lock_guard<std::mutex> lock(state_cov_mutex_);
