@@ -119,7 +119,7 @@ def launch_setup(context: LaunchContext, *args: Any, **kwargs: Any) -> list[Acti
         Node(
             package="nav2_lifecycle_manager",
             executable="lifecycle_manager",
-            name="lifecycle_manager_navigation",
+            name="lifecycle_manager",
             parameters=[
                 fleet_param_file,
                 agent_param_file,
