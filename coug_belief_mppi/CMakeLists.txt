@@ -28,12 +28,11 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
+find_package(Eigen3 REQUIRED)
 find_package(OpenMP REQUIRED)
 
 set(COUG_BELIEF_MPPI_NODES belief_state_monitor)
 
-set(COUG_BELIEF_MPPI_NODE_SOURCES "")
-set(COUG_BELIEF_MPPI_PARAM_LIBRARIES "")
 foreach(node IN LISTS COUG_BELIEF_MPPI_NODES)
   generate_parameter_library(
     ${node}_parameters
@@ -43,15 +42,14 @@ foreach(node IN LISTS COUG_BELIEF_MPPI_NODES)
   list(APPEND COUG_BELIEF_MPPI_PARAM_LIBRARIES "${node}_parameters")
 endforeach()
 
-ament_auto_add_library(coug_belief_mppi_component SHARED NO_TARGET_LINK_LIBRARIES
+ament_auto_add_library(coug_belief_mppi_component SHARED
   ${COUG_BELIEF_MPPI_NODE_SOURCES}
 )
-
-target_compile_features(coug_belief_mppi_component PUBLIC cxx_std_17)
 
 target_link_libraries(
   coug_belief_mppi_component
   ${COUG_BELIEF_MPPI_PARAM_LIBRARIES}
+  Eigen3::Eigen
 )
 
 rclcpp_components_register_nodes(coug_belief_mppi_component
@@ -59,21 +57,14 @@ rclcpp_components_register_nodes(coug_belief_mppi_component
 )
 
 foreach(node IN LISTS COUG_BELIEF_MPPI_NODES)
-  ament_auto_add_executable(${node} NO_TARGET_LINK_LIBRARIES "src/${node}_node.cpp")
-  target_link_libraries(${node} coug_belief_mppi_component)
+  ament_auto_add_executable(${node} "src/${node}_node.cpp")
 endforeach()
 
 ament_auto_add_library(coug_belief_mppi_critics SHARED NO_TARGET_LINK_LIBRARIES
   src/belief_state_critic.cpp
 )
 
-target_compile_features(coug_belief_mppi_critics PUBLIC cxx_std_17)
-
-target_link_libraries(
-  coug_belief_mppi_critics
-  pluginlib::pluginlib
-  OpenMP::OpenMP_CXX
-)
+target_link_libraries(coug_belief_mppi_critics Eigen3::Eigen OpenMP::OpenMP_CXX)
 
 pluginlib_export_plugin_description_file(nav2_mppi_controller critics.xml)
 
