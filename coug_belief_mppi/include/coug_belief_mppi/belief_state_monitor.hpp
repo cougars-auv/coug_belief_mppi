@@ -30,6 +30,8 @@ class BeliefStateMonitorNode : public rclcpp::Node {
   explicit BeliefStateMonitorNode(const rclcpp::NodeOptions& options);
 
  private:
+  static constexpr int kStateDim = 15;
+
   // --- Callbacks ---
   void odomCallback(const nav_msgs::msg::Odometry::ConstSharedPtr& msg);
 
@@ -51,7 +53,8 @@ class BeliefStateMonitorNode : public rclcpp::Node {
   belief_state_monitor_node::Params params_;
 
   // --- State ---
-  Eigen::Matrix<double, 15, 15> state_cov_{Eigen::Matrix<double, 15, 15>::Identity()};
+  Eigen::Matrix<double, kStateDim, kStateDim> state_cov_{
+      Eigen::Matrix<double, kStateDim, kStateDim>::Identity()};
   Eigen::Matrix<double, 6, 6> init_bias_cov_inv_{Eigen::Matrix<double, 6, 6>::Identity()};
   bool received_odom_{false};
   bool received_vel_{false};

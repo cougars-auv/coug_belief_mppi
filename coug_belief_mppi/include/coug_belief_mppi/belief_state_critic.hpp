@@ -34,6 +34,8 @@ class BeliefStateCritic : public CriticFunction {
   void score(CriticData& data) override;
 
  private:
+  static constexpr int kStateDim = 15;
+
   // --- Callbacks ---
   void fgOdomCallback(const nav_msgs::msg::Odometry::ConstSharedPtr& msg);
 
@@ -65,7 +67,8 @@ class BeliefStateCritic : public CriticFunction {
 
   // --- State ---
   mutable std::mutex state_cov_mutex_;
-  Eigen::Matrix<double, 15, 15> init_state_cov_{Eigen::Matrix<double, 15, 15>::Identity()};
+  Eigen::Matrix<double, kStateDim, kStateDim> init_state_cov_{
+      Eigen::Matrix<double, kStateDim, kStateDim>::Identity()};
   std::atomic<bool> received_odom_{false};
   std::atomic<bool> received_vel_{false};
   std::atomic<bool> received_bias_{false};
