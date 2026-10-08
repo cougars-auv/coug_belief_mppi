@@ -32,9 +32,9 @@
 
 ### Challenges
 
-There were several challenging aspects of this project, including Nav2 integration debugging and deriving the Jacobeans for the EKF predict and update steps in the BeliefStateCritic.
+There were several challenging aspects of this project, including Nav2 integration debugging and deriving the Jacobians for the EKF predict and update steps in the BeliefStateCritic.
 
-The two most challenging aspects, however, were (1) getting the code to run fast enough for real-time control, and (2) effectively tuning the trace heuristic. Even using OpenMP for CPU parallelism and performing extensive pre-computation, I was only able to run 250 rollouts of 15 steps of 0.1 seconds executing at 10 Hz on my lab computer with all 32 CPUs maxed out at 100%. Additionally, the full unnormalized covariance trace was dominated by the growing positional uncertainty inherent to dead reckoning and skewed by mixed units. To maximize the heuristic's impact over just a 1.5-second horizon, I chose to score the trajectory using the normalized IMU bias covariances instead.
+The two most challenging aspects, however, were (1) getting the code to run fast enough for real-time control and (2) effectively tuning the trace heuristic. Even using OpenMP for CPU parallelism and performing extensive pre-computation, I was only able to run 250 rollouts of 15 steps of 0.1 seconds executing at 10 Hz on my lab computer with all 32 CPUs maxed out at 100%. Additionally, the full unnormalized covariance trace was dominated by the growing positional uncertainty inherent to dead reckoning and skewed by mixed units. To maximize the heuristic's impact over just a 1.5-second horizon, I chose to score the trajectory using the normalized IMU bias covariances instead.
 
 ### Experiments & Validation
 
@@ -52,7 +52,7 @@ To isolate and validate the performance of the BeliefStateCritic, I ran 6 missio
 
 <br>
 
-The demo demonstrates the BeliefStateCritic encouraging excitation-rich maneuvers as the AUV navigates to 3 waypoints using the MPPI controller.
+The demo shows the BeliefStateCritic encouraging excitation-rich maneuvers as the AUV navigates to 3 waypoints using the MPPI controller.
 
 ### AI Use Disclosure
 
@@ -62,9 +62,9 @@ Gemini 3.1 Pro was used as a collaborative partner for initial brainstorming, an
 
 ### Problem
 
-Effective underwater navigation requires balancing both progressing toward a goal and maintaining an accurate state estimate. For AUVs relying extensively on internal sensors (IMU, DVL, etc), excitation – changes in acceleration and velocity – can often improve state estimate accuracy. This conflicts with the goal-directed approach of many AUV path planners and controllers.
+Effective underwater navigation requires balancing both progressing toward a goal and maintaining an accurate state estimate. For AUVs relying extensively on internal sensors (IMU, DVL, etc.), excitation – changes in acceleration and velocity – can often improve state estimate accuracy. This conflicts with the goal-directed approach of many AUV path planners and controllers.
 
-Finding the optimal trajectory that balances goal achievement with state estimation accuracy is a POMDP. However, through extending our state vector to include the covariance matrix of our state estimate, we can transform the problem into an observable belief-state MDP. This is a common strategy in Active SLAM, but results in a high degree of dimensionality. Calculating an exact closed-loop solution across all those continuous dimensions raises some serious computational challenges, especially in real-time on limited AUV hardware.
+Finding the optimal trajectory that balances goal achievement with state estimation accuracy is a POMDP. However, by extending our state vector to include the covariance matrix of our state estimate, we can transform the problem into an observable belief-state MDP. This is a common strategy in Active SLAM but results in a high degree of dimensionality. Calculating an exact closed-loop solution across all those continuous dimensions raises some serious computational challenges, especially in real-time on limited AUV hardware.
 
 ### Proposed Solution Approach
 
@@ -74,7 +74,7 @@ To simplify the scope of the project, I will make use of the HoloOcean simulator
 
 1. Integrate Nav2’s “nav2_mppi_controller” with the HoloOcean simulator
 2. Implement a new AUV dynamics plugin (based on a simplified Fossen model) to accurately model physical state propagation during rollouts
-3. Implement a new heuristic plugin to simulate uncertainty propagation and penalize trajectories based on the trace of the resulting covariance matrix, forcing the the controller to favor excitation-rich action sequences
+3. Implement a new heuristic plugin to simulate uncertainty propagation and penalize trajectories based on the trace of the resulting covariance matrix, forcing the controller to favor excitation-rich action sequences
 4. Benchmark the resulting algorithm’s uncertainty growth over a set waypoint sequence against a baseline MPPI controller
 
 ## Contributing
