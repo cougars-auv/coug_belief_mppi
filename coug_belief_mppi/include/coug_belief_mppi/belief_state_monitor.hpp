@@ -46,7 +46,7 @@ class BeliefStateMonitorNode : public rclcpp::Node {
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
   rclcpp::Subscription<geometry_msgs::msg::TwistWithCovarianceStamped>::SharedPtr vel_sub_;
   rclcpp::Subscription<geometry_msgs::msg::TwistWithCovarianceStamped>::SharedPtr bias_sub_;
-  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr trace_pub_;
+  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr norm_trace_pub_;
 
   // --- Parameters ---
   std::shared_ptr<belief_state_monitor_node::ParamListener> param_listener_;

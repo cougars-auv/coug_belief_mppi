@@ -50,8 +50,8 @@ BeliefStateMonitorNode::BeliefStateMonitorNode(const rclcpp::NodeOptions& option
         biasCallback(msg);
       });
 
-  trace_pub_ = create_publisher<std_msgs::msg::Float64>(params_.norm_trace_topic,
-                                                        rclcpp::SystemDefaultsQoS());
+  norm_trace_pub_ = create_publisher<std_msgs::msg::Float64>(params_.norm_trace_topic,
+                                                             rclcpp::SystemDefaultsQoS());
 
   RCLCPP_INFO(get_logger(), "Initialization complete.");
 }
@@ -128,7 +128,7 @@ void BeliefStateMonitorNode::publishTrace() {
 
   auto msg = std_msgs::msg::Float64();
   msg.data = trace;
-  trace_pub_->publish(msg);
+  norm_trace_pub_->publish(msg);
 }
 
 }  // namespace coug_belief_mppi
