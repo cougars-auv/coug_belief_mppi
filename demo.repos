@@ -1,8 +1,8 @@
 repositories:
   blue_description:
     type: zip
-    url: https://github.com/Robotic-Decision-Making-Lab/blue/archive/refs/heads/main.zip
-    version: blue-main/blue_description
+    url: https://github.com/Robotic-Decision-Making-Lab/blue/archive/812fea605cd2056ba20fac504f456457594595fb.zip
+    version: blue-812fea605cd2056ba20fac504f456457594595fb/blue_description
   coug_description:
     type: git
     url: https://github.com/cougars-auv/coug_description.git
