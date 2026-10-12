@@ -1,0 +1,48 @@
+# Copyright 2026 BYU FROST Lab
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+ARG VERSION=latest
+
+FROM frostlab/cougars:runtime-${VERSION} AS demo
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV OVERLAY_WS=/ros2_ws
+
+SHELL [ "/bin/bash", "-c" ]
+
+COPY . ${OVERLAY_WS}/src/repo
+
+WORKDIR ${OVERLAY_WS}
+
+# Import demo packages
+RUN source "/opt/ros/${ROS_DISTRO}/setup.bash" && \
+  vcs import src < src/repo/demo.repos
+
+# Install ROS 2 dependencies (rosdep)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  --mount=type=cache,target=/root/.ros/rosdep \
+  apt-get update \
+  && rosdep update \
+  && rosdep install --from-paths src --ignore-src -y
+
+# Build the ROS 2 workspace
+RUN --mount=type=cache,target=${OVERLAY_WS}/build \
+  --mount=type=cache,target=${OVERLAY_WS}/log \
+  source "/opt/ros/${ROS_DISTRO}/setup.bash" && \
+  colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "/bin/bash" ]

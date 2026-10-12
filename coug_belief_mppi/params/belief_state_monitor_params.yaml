@@ -1,0 +1,21 @@
+belief_state_monitor_node:
+  fg_odom_topic:
+    type: string
+    default_value: "odometry/global"
+    validation:
+      not_empty<>: []
+  fg_velocity_topic:
+    type: string
+    default_value: "factor_graph_node/velocity"
+    validation:
+      not_empty<>: []
+  fg_bias_topic:
+    type: string
+    default_value: "factor_graph_node/imu/bias"
+    validation:
+      not_empty<>: []
+  norm_trace_topic:
+    type: string
+    default_value: "~/norm_trace"
+    validation:
+      not_empty<>: []

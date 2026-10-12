@@ -1,0 +1,11 @@
+output_bags:
+  - uri: demo_bag
+    storage_id: mcap
+    topics:
+      - /tf
+      - /tf_static
+      - /blue1holo/robot_description
+      - /blue1holo/odometry/truth
+      - /blue1holo/odometry/global
+      - /blue1holo/smoothed_path
+      - /blue1holo/waypoints_viz
