@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG VERSION=latest
+ARG VERSION=v0.1.0
 
 FROM frostlab/cougars:runtime-${VERSION} AS demo
 

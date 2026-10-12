@@ -18,7 +18,7 @@
 - Clone the `coug_belief_mppi` repository.
 
   ```bash
-  git clone https://github.com/cougars-auv/coug_belief_mppi.git
+  git clone --branch v0.1.1 https://github.com/cougars-auv/coug_belief_mppi.git
   ```
 
 - Enable GUI forwarding, build the Docker image, and launch the demo container.
