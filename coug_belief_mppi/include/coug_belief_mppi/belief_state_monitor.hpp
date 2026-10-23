@@ -19,7 +19,10 @@
 #include <geometry_msgs/msg/twist_with_covariance_stamped.hpp>
 #include <memory>
 #include <nav_msgs/msg/odometry.hpp>
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/node.hpp>
+#include <rclcpp/node_options.hpp>
+#include <rclcpp/publisher.hpp>
+#include <rclcpp/subscription.hpp>
 #include <std_msgs/msg/float64.hpp>
 
 #include "coug_belief_mppi/belief_state_monitor_parameters.hpp"

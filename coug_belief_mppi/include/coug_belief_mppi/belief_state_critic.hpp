@@ -16,14 +16,14 @@
 
 #include <Eigen/Core>
 #include <atomic>
-#include <memory>
 #include <mutex>
+#include <rclcpp/subscription.hpp>
+#include <string>
 
 #include "coug_interfaces/msg/imu_bias.hpp"
 #include "geometry_msgs/msg/twist_with_covariance_stamped.hpp"
 #include "nav2_mppi_controller/critic_data.hpp"
 #include "nav2_mppi_controller/critic_function.hpp"
-#include "nav2_mppi_controller/tools/utils.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 
 namespace mppi::critics {
